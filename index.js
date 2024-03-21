@@ -1,6 +1,6 @@
 import 'dotenv/config'
 import express from 'express'
-import morgan from  'morgan'
+import morgan from 'morgan'
 import cors from 'cors'
 import { Person } from './person.js'
 
@@ -17,43 +17,11 @@ const morganfc = (tokens, req, res) => {
     tokens.status(req, res),
     tokens.res(req, res, 'content-length'), '-',
     tokens['response-time'](req, res), 'ms',
-    JSON.stringify(req.body),
+    JSON.stringify(req.body)
   ].join(' ')
 }
 
 app.use(morgan(morganfc))
-
-let persons = [
-  { 
-    "id": 1,
-    "name": "Arto Hellas", 
-    "number": "040-123456"
-  },
-  { 
-    "id": 2,
-    "name": "Ada Lovelace", 
-    "number": "39-44-5323523"
-  },
-  { 
-    "id": 3,
-    "name": "Dan Abramov", 
-    "number": "12-43-234345"
-  },
-  { 
-    "id": 4,
-    "name": "Mary Poppendieck", 
-    "number": "39-23-6423122"
-  }
-]
-
-app.get('/info', (req, res) => {
-  const info = `
-    <p>Phonebook has info for ${persons.length} people</p>
-    <br />
-    ${Date(Date.now()).toString()}
-  `
-  res.send(info)
-})
 
 app.get('/api/persons', (req, res, next) => {
   Person
@@ -76,10 +44,10 @@ app.delete('/api/persons/:id', (req, res, next) => {
     .catch(err => next(err))
 })
 
-app.post('/api/persons', (req, res, next) => {  
+app.post('/api/persons', (req, res, next) => {
   const newPerson = new Person({
     name: req.body.name,
-    number: req.body.number,
+    number: req.body.number
   })
 
   newPerson
@@ -87,9 +55,6 @@ app.post('/api/persons', (req, res, next) => {
     .then(personSaved => res.json(personSaved))
     .catch(err => next(err))
 })
-
-
-
 
 const unknownEndpoint = (request, response) => {
   response.status(404).send({ error: 'unknown endpoint' })
@@ -101,8 +66,8 @@ const errorHandler = (err, req, res, next) => {
   console.log(err.name)
   console.log(err.message)
 
-  if (err.name === 'CastError') return res.status(400).send({error: 'malformatted id'})
-  if (err.name === 'ValidationError') return res.status(400).json({error: err.message})
+  if (err.name === 'CastError') return res.status(400).send({ error: 'malformatted id' })
+  if (err.name === 'ValidationError') return res.status(400).json({ error: err.message })
 
   next(err)
 }
