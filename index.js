@@ -74,14 +74,16 @@ app.delete('/api/persons/:id', (req, res) => {
 })
 
 app.post('/api/persons', (req, res) => {
-  const maxId = Math.max(...persons.map(p => p.id))
+  if (!req.body.name || !req.body.number) return res.status(400).end('Bad request!!!')
   
-  if (!req.body.name || !req.body.number) return res.status(400).end('Bad request')
-  if (persons.find(p => p.name === req.body.name)) return res.status(409).end('Name must be unique')
-
-  const newPerson = {...req.body, id: maxId + 1}
-  persons = [...persons, newPerson]
-  res.json(newPerson)
+  const newPerson = new Person({
+    name: req.body.name,
+    number: req.body.number,
+  })
+  newPerson
+    .save()
+    .then(personSaved => res.json(personSaved))
+    .catch(err => res.status(500).end(err.message))
 })
 
 
