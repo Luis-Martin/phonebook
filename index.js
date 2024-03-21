@@ -67,17 +67,10 @@ app.get('/api/persons/:id', (req, res) => {
 })
 
 app.delete('/api/persons/:id', (req, res) => {
-  const id = Number(req.params.id)
-  
-  const person = persons.find(p => p.id === id)
-  persons = persons.filter(p => p.id !== id)
-  
-  if (person) {
-    console.log(person)
-    return res.json(person)
-  }
-
-  res.status(404).end('Person has been already deleted')
+  Person
+    .findByIdAndDelete(req.params.id)
+    .then(person => res.json(person))
+    .catch(err => res.status(400).end(err.message))
 })
 
 app.post('/api/persons', (req, res) => {
