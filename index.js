@@ -60,11 +60,10 @@ app.get('/api/persons', (req, res) => {
 })
 
 app.get('/api/persons/:id', (req, res) => {
-  const id = Number(req.params.id)
-  const person = persons.find(person => person.id === id)
-  
-  if (person) return res.json(person)
-  res.status(404).end('Person not found')
+  Person
+    .findById(req.params.id)
+    .then(person => res.json(person))
+    .catch(err => res.status(404).end(err.message))
 })
 
 app.delete('/api/persons/:id', (req, res) => {
