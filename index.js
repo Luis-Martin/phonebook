@@ -2,6 +2,7 @@ import 'dotenv/config'
 import express from 'express'
 import morgan from  'morgan'
 import cors from 'cors'
+import { Person } from './person.js'
 
 const app = express()
 
@@ -55,7 +56,7 @@ app.get('/info', (req, res) => {
 })
 
 app.get('/api/persons', (req, res) => {
-  res.json(persons)
+  Person.find({}).then(notes => res.json(notes))
 })
 
 app.get('/api/persons/:id', (req, res) => {
