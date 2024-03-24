@@ -1,3 +1,5 @@
+import logger from './logger.js'
+
 const morganfc = (tokens, req, res) => {
   return [
     tokens.method(req, res),
@@ -14,8 +16,8 @@ const unknownEndpoint = (req, res) => {
 }
 
 const errorHandler = (err, req, res, next) => {
-  console.log(err.name)
-  console.log(err.message)
+  logger.error(err.name)
+  logger.error(err.message)
 
   if (err.name === 'CastError') return res.status(400).send({ error: 'malformatted id' })
   if (err.name === 'ValidationError') return res.status(400).json({ error: err.message })
