@@ -1,4 +1,4 @@
-import 'dotenv/config'
+import config from './utils/config.js'
 import express from 'express'
 import mongoose from 'mongoose'
 import morgan from 'morgan'
@@ -10,7 +10,7 @@ const app = express()
 
 mongoose.set('strictQuery', false)
 mongoose
-  .connect(process.env.MONGODB_URI)
+  .connect(config.MONGODB_URI)
   .then(res => console.log('Connected to MongoDB'))
   .catch(err => console.log('error connecting to MongoDB:', err.message))
 
