@@ -2,7 +2,7 @@ import 'dotenv/config'
 import express from 'express'
 import morgan from 'morgan'
 import cors from 'cors'
-import Person from './person.js'
+import personsRouter from './controllers/persons.js'
 
 const app = express()
 
@@ -22,39 +22,7 @@ const morganfc = (tokens, req, res) => {
 }
 
 app.use(morgan(morganfc))
-
-app.get('/api/persons', (req, res, next) => {
-  Person
-    .find({})
-    .then(notes => res.json(notes))
-    .catch(err => next(err))
-})
-
-app.get('/api/persons/:id', (req, res, next) => {
-  Person
-    .findById(req.params.id)
-    .then(person => person ? res.json(person) : res.status(404).end('Person not found'))
-    .catch(err => next(err))
-})
-
-app.delete('/api/persons/:id', (req, res, next) => {
-  Person
-    .findByIdAndDelete(req.params.id)
-    .then(person => res.status(204).end())
-    .catch(err => next(err))
-})
-
-app.post('/api/persons', (req, res, next) => {
-  const newPerson = new Person({
-    name: req.body.name,
-    number: req.body.number
-  })
-
-  newPerson
-    .save()
-    .then(personSaved => res.json(personSaved))
-    .catch(err => next(err))
-})
+app.use('/api/persons', personsRouter)
 
 const unknownEndpoint = (request, response) => {
   response.status(404).send({ error: 'unknown endpoint' })
