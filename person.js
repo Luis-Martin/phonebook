@@ -30,4 +30,4 @@ personSchema.set('toJSON', {
 
 const Person = mongoose.model('Person', personSchema)
 
-export { Person }
+export default Person

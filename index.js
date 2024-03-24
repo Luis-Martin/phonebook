@@ -2,7 +2,7 @@ import 'dotenv/config'
 import express from 'express'
 import morgan from 'morgan'
 import cors from 'cors'
-import { Person } from './person.js'
+import Person from './person.js'
 
 const app = express()
 
