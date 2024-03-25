@@ -18,7 +18,7 @@ app.use(cors())
 app.use(express.json())
 app.use(express.static('dist'))
 
-app.use(morgan(middleware.morganfc))
+if (process.env.NODE_ENV !== 'test') app.use(morgan(middleware.morganfc))
 app.use('/api/persons', personsRouter)
 
 app.use(middleware.unknownEndpoint)
